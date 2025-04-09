@@ -1,0 +1,4 @@
+[submodule "MagicMirror"]
+    path = MagicMirror
+    url = https://github.com/vveeky/MagicMirror.git
+    branch = custom-changes
