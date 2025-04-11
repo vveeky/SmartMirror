@@ -1,4 +1,4 @@
-FROM node:18-bullseye
+FROM --platform=$BUILDPLATFORM node:18-bullseye
 
 # Установка системных зависимостей
 RUN apt-get update && apt-get install -y \
@@ -15,12 +15,11 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     libgtk-3-0 \
     --no-install-recommends \
+    --fix-missing \
     && rm -rf /var/lib/apt/lists/*
 
 # Инициализация подмодулей Git
 RUN apt-get update && apt-get install -y git
-COPY .gitmodules ./
-RUN git submodule update --init --recursive
 
 # Рабочая директория и зависимости
 WORKDIR /app

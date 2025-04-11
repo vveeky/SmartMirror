@@ -1,11 +1,23 @@
+version: '3.8'
+
 services:
   smartmirror:
-    build: .
+    build:
+      context: .
+      # Для кросс-компиляции под Raspberry Pi 3 (ARMv7)
+      platform: linux/arm/v7
     ports:
-      - "8080:8080"
+      - "8080:8080"  # Порт MagicMirror
     environment:
-      - DISPLAY=host.docker.internal:0
+      - DISPLAY=${DISPLAY:-:0}  # Универсальная настройка для Windows и Pi
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-    platform: linux/arm/v7
+      - /tmp/.X11-unix:/tmp/.X11-unix  # Монтирование сокета X Server
+    # Добавьте сеть и зависимости, если нужно
+    networks:
+      - smartmirrorn-net
     restart: unless-stopped
+
+# Создайте сеть (опционально, но полезно для масштабирования)
+networks:
+  smartmirrorn-net:
+    driver: bridge
